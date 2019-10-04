@@ -1,36 +1,22 @@
 import { Dispatcher } from 'flux'
-import { CountStore } from './stores/countStore'
-import { NameStore } from './stores/nameStore'
-
+import {CountStore, NameStore} from './stores'
 const dispatcher = new Dispatcher();
 
 dispatcher.register((payload)=>
 {
     if (payload.type === 'CHANGE_NAME')
     {
-        CountStore.setData(payload.value);
-    }
-});
-dispatcher.register((payload)=>
-{
-    if (payload.type === 'ADD_COUNT')
+        NameStore.setValue(payload.value);
+        NameStore.emit('change');
+    }else if (payload.type === 'ADD_COUNT')
     {
-        NameStore.setData(NameStore.getData() + payload.value);
+        CountStore.setValue(NameStore.getData() + payload.value);
+        CountStore.emit('change');
     }
 });
 
 export const Action = {
-
-
-    getData(type){
-        switch(type)
-        {
-            case 'COUNT':
-                return CountStore.getData();
-            case 'NAME':
-                return NameStore.getData();
-            default:
-                return null;
-        }
-    }
+    setData(payload){
+        dispatcher.dispatch(payload);
+    },
 }

@@ -74,24 +74,11 @@ module.exports = {
                 test: /\.(png|jpg|gif|mp4|ogg|svg|woff|woff2|ttf|eot)$/,
                 loader: 'file-loader'
             },
-            // {
-            //     test: /\.css$/,
-            //     loader: 'css-loader',
-            //     options: 
-            //     {
-            //         modules: true,
-            //         localIdentName: '[name]-[local]-[hash:base64:5]',
-            //     },
-            //     use: [
-            //         'style-loader'
-            //     ],
-            // },
             {
                 test: /\.css$/,
                 use: [
                     'style-loader', 
                     'css-loader',
-                    // 'postcss-loader'
                 ],
             },
             {
@@ -99,13 +86,12 @@ module.exports = {
                 use: [
                     'style-loader', 
                     'css-loader',
-                    // 'postcss-loader',
-                    // {
-                    //     loader: "less-loader",
-                    //     options: {
-                    //         javascriptEnabled: true
-                    //     }
-                    // }
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            javascriptEnabled: true
+                        },
+                    }
                 ]
               },
         ]
@@ -136,5 +122,8 @@ module.exports = {
         host: '127.0.0.3',
         port: 7788,
         index: 'index.html'
+    },
+    node: {
+        fs: 'empty'
     }
 }

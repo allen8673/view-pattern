@@ -1,73 +1,24 @@
-import React, { Suspense, lazy } from 'react'
-import ReactDOM, { render } from "react-dom";
-import Hi from './components/hi/hi'
-import './index.css';
-import {Dispatcher} from 'flux'
+import {Input, Button} from 'antd'
+import {createStore } from 'redux'
+import {store} from './store'
+import * as action from './action'
 
-
-const dispatcher = new Dispatcher();
-
-
-var Store1 = {
-    nameh: 'bj',
-    changeName: function(text)
-    {
-        this.nameh = text;
-    },
-    getData()
-    {
-        return this.nameh;
-    },
-};
-
-var Store2 = {
-    acount: 0,
-    addCount: function(int) {
-        this.acount += int;
-    },
-    getData() {
-        return this.acount;
-    },
-};
-
-const handler1 = (payload) =>
+class Apps extends React.Component
 {
-    if (payload.type === 'CHANGE_NAME')
+    render()
     {
-        Store1.changeName(payload.value);
+        console.log('aaaa');
+        console.log(store.getState());
+        // console.log(store.getState())
+        store.dispatch(action.changeName('allen'))
+        console.log('sssss');
+        console.log(store.getState());
+        return (
+            <div>
+                <Input style={{width:'900'}}/>
+            </div>
+        );
     }
-};
-
-const handler2  = (payload) =>
-{
-    if (payload.type === 'ADD_COUNT')
-    {
-        Store2.addCount(payload.value);
-    }
-};
-
-dispatcher.register(handler1)
-dispatcher.register(handler2)
-
-const App = () =>
-{
-    dispatcher.dispatch({
-        type: 'CHANGE_NAME',
-        value: 'Allen'
-    });
-
-    dispatcher.dispatch({
-        type: 'ADD_COUNT',
-        value: 3
-    });
-
-    console.log('Store1 value : ' + Store1.getData());
-    console.log('Store2 value : ' + Store2.getData());
-
-    return (<div>
-        src: <Hi/>
-    </div>)
 }
 
-
-ReactDOM.render(<App />, document.getElementById("app"))
+ReactDOM.render(<Apps/>, document.getElementById("app"))

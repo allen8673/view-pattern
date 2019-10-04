@@ -1,71 +1,39 @@
-import React, { Suspense, lazy } from 'react'
-import ReactDOM, { render } from "react-dom";
-import './index.css';
-import {Dispatcher} from 'flux'
+import {Input, Button} from 'antd'
+import {Action} from './action'  
+import {CountStore, NameStore} from './stores'  
 
-
-const dispatcher = new Dispatcher();
-
-
-// var Store1 = {
-//     nameh: 'bj',
-//     changeName: function(text)
-//     {
-//         this.nameh = text;
-//     },
-//     getData()
-//     {
-//         return this.nameh;
-//     },
-// };
-
-// var Store2 = {
-//     acount: 0,
-//     addCount: function(int) {
-//         this.acount += int;
-//     },
-//     getData() {
-//         return this.acount;
-//     },
-// };
-
-const handler1 = (payload) =>
+class App extends React.Component 
 {
-    if (payload.type === 'CHANGE_NAME')
+    constructor(props)
     {
-        Store1.changeName(payload.value);
+        super(props);
+        this.state  = {
+            name : 'NAME',
+            count : 0
+        };
+
+        CountStore.on('change', ()=>{
+            this.setState({name: CountStore.getData()})
+        });
+        
+        NameStore.on('change', ()=>{
+            this.setState({name: NameStore.getData()})
+        })
     }
-};
 
-const handler2  = (payload) =>
-{
-    if (payload.type === 'ADD_COUNT')
-    {
-        Store2.addCount(payload.value);
+    render(){
+        const { name } = this.state;
+        return (
+        <div>
+            <span>{name}</span> <br/>
+            <Button onClick={(event)=>{
+               Action.setData({
+                   type: 'CHANGE_NAME',
+                   value:'Allen'
+               })
+           }}>change name</Button>
+        </div>)
     }
-};
-
-dispatcher.register(handler1)
-dispatcher.register(handler2)
-
-const App = () =>
-{
-    dispatcher.dispatch({
-        type: 'CHANGE_NAME',
-        value: 'Allen'
-    });
-
-    dispatcher.dispatch({
-        type: 'ADD_COUNT',
-        value: 3
-    });
-
-    console.log('Store1 value : ' + Store1.getData());
-    console.log('Store2 value : ' + Store2.getData());
-
-    return (<div>
-        src: <Hi/>
-    </div>)
 }
 
 
